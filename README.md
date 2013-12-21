@@ -31,3 +31,5 @@ build in a library for text analysis - sentiment analysis, stuff like that to an
 Modules:
 -journal
 -analysis
+
+special things: what are you grateful for today? etc, specialized questions
