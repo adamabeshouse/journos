@@ -1,0 +1,8 @@
+journos -> just do todays entry then quit
+	-> if todays entry already done, say you already did your entry today, then give tips for what else to do
+
+journos MM/DD/YYYY -> do that days entry if there's nothing there
+		  -> if there is something there, print it, and then ask about replacing or osmething. some interface issues here.
+
+journos log -> enter reading interface
+journos log 02/02/2013 -> read that entry
