@@ -10,14 +10,12 @@ def printPurple(s):
 	print(s)
 	colorStack.popColor()
 
-def makeReadable(s):
-	#line break every 80 characters, and add hyphen if you cut words in the middle
-	moreReadable=''
-	for i in range(len(s)):
-		moreReadable += s[i]
-		if i>0 and i%80==0:
-			if s[i]!=' ' and i < len(s)-1:
-				if s[i+1]!=' ':
-					moreReadable += '-'
-			moreReadable += '\n'
-	return moreReadable
+def printGreen(s):
+	colorStack.pushGreen()
+	print(s)
+	colorStack.popColor()
+
+def printCyan(s):
+	colorStack.pushCyan()
+	print(s)
+	colorStack.popColor()

@@ -4,5 +4,5 @@ journos -> just do todays entry then quit
 journos MM/DD/YYYY -> do that days entry if there's nothing there
 		  -> if there is something there, print it, and then ask about replacing or osmething. some interface issues here.
 
-journos log -> enter reading interface
-journos log 02/02/2013 -> read that entry
+journos read -> enter reading interface
+journos read 02/02/2013 -> read that entry
