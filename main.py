@@ -43,6 +43,8 @@ if RUNTYPE=="WRITE":
 			ent=entry.Entry()
 			ent.date=day
 			#TODO: write (blank entry for that date)
+			journosOut.printPurple("If you change your mind, type 'journos "+day+"'")
+		journosOut.endSection()
 	if DATE=="today":
 		# TODO: editing old entries, doing an entry for one you've already done
 		journosOut.printPurple("Would you like to fill out an entry for today? (Y/N)")
@@ -51,8 +53,9 @@ if RUNTYPE=="WRITE":
 			ent.getToday()
 			#TODO: write
 		else:
-			print("TODO: QUIT")
-			#TODO: quit()
+			today=journosIn.formatDate(datetime.date.today())
+			journosOut.printPurple("If you change your mind, type 'journos "+today+"'")
+			quit()
 	else:
 		journosOut.printPurple("Would you like to fill out an entry for "+DATE+"? (Y/N)")
 		if journosIn.isYes(journosIn.getInput()):
@@ -60,8 +63,9 @@ if RUNTYPE=="WRITE":
 			ent.get(DATE)
 			#TODO: write
 		else:
-			print("TODO: QUIT")
-			#TODO: quit()
+			journosOut.printPurple("If you change your mind, type 'journos "+DATE+"'")
+			quit()
+	journosOut.endSection()
 elif RUNTYPE=="READ":
 	print "TO BE IMPLEMENTED: READING"
 

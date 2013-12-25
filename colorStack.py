@@ -1,35 +1,37 @@
+import sys
+
 colorStack=[]
 BLUE='\033[94m'
 PURPLE='\033[35m'
 NOCOLOR='\033[0m'
-RED='\033[93m'
+RED='\033[91m'
 GREEN='\033[92m'
 CYAN='\033[36m'
 
 def pushBlue():
 	colorStack.append(BLUE)
-	print BLUE
+	sys.stdout.write(BLUE)
 
 def pushPurple():
 	colorStack.append(PURPLE)
-	print PURPLE
+	sys.stdout.write(PURPLE)
 
 def pushCyan():
 	colorStack.append(CYAN)
-	print CYAN
+	sys.stdout.write(CYAN)
 
 def pushRed():
 	colorStack.append(RED)
-	print RED
+	sys.stdout.write(RED)
 
 def pushGreen():
 	colorStack.append(GREEN)
-	print GREEN
+	sys.stdout.write(GREEN)
 
 def popColor():
 	if len(colorStack)==1:
 		colorStack.pop();
-		print NOCOLOR
+		sys.stdout.write(NOCOLOR)
 	elif len(colorStack)>1:
 		colorStack.pop();
-		print colorStack[len(colorStack)-1]
+		sys.stdout.write(colorStack[len(colorStack)-1])
