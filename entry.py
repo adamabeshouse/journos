@@ -1,8 +1,12 @@
+import sys
+import tempfile
 import journosOut
 import config
 import datetime
 import string
 import journosIn
+import os
+from subprocess import call
 
 GENERAL="What did you do today?"
 class Entry:
@@ -27,10 +31,49 @@ class Entry:
 		self.date=str(d.month)+"/"+str(d.day)+"/"+str(d.year)
 	
 	def get(self,_date):
-		journosOut.printPurple("You are about to complete an entry for "+_date)
+		if _date!=journosDate.today():
+			journosOut.printPurple("You are about to complete an entry for "+_date)
 		self.getToday()
 		self.date=_date
 
+	def edit(self,_date):
+		ent=Entry()
+		ent.readEntry(_date)
+		initial_msg=ent.to_editable()
+		EDITOR = os.environ.get('EDITOR','vim')
+		with tempfile.NamedTemporaryFile(suffix=".tmp") as tmpfile:
+			tmpfile.write(initial_msg)
+			tmpfile.flush()
+			call([EDITOR, tmpfile.name])
+			tmpF=open(tmpfile.name,'r')
+			text=tmpF.read()
+			self.from_editable(text)
+
+	def to_editable(self):
+		ret="DO NOT EDIT ANY LINES THAT BEGIN WITH 'x|'\n\n"
+		ret+="d|"+self.date+'\n\n'
+		ret+="q|"+GENERAL+'\n\n'+self.section[GENERAL]+'\n\n'
+		for q in self.section.keys():
+			if q != GENERAL:
+				ret+="q|"+q+'\n\n'+self.section[q]+'\n\n'
+		return ret
+
+	def from_editable(self, text):
+		in_question=False
+		lines=text.split('\n')
+		current_question=""
+		current_answer=""
+		for line in lines:
+			if line.startswith("d|"):
+				self.date=line.split("d|")[1].strip()
+			elif line.startswith("q|"):
+				if current_question!="":
+					self.section[current_question]=current_answer
+				current_question=line.split("q|")[1].strip()
+				current_answer=""
+			else:
+				current_answer+=line
+					
 	def to_s(self):
 		conf=config.Config()
 		conf.get()
@@ -46,13 +89,45 @@ class Entry:
 			QnA=s[i].split(":")
 			self.section[QnA[0]] = QnA[1]
 
-def readEntry(date):
-	f=open("journal.journos","r")
-	l=""
-	for line in f:
-		if line.startswith(date):
-			l=line
-			break
-	ent=Entry()
-	ent.from_s(l)
-	return ent
+	def readEntry(self, date):
+		f=open("journal.journos","r")
+		l=""
+		success = 0
+		for line in f:
+			if line.startswith(date):
+				l=line
+				success = 1
+				break
+		if success == 0:
+			return 0
+		self.from_s(l)
+		return 1
+
+def printEntry(ent):
+	rows,cols=os.popen('stty size','r').read().split()
+	cols=int(cols)
+
+	dateLine="#######    "+ent.date+"    "
+	aboveLine="#######"
+	belowLine="#######"
+
+	for i in range(0,cols-len(dateLine)):
+		dateLine+='#'
+
+	for i in range(0,8+len(ent.date)):
+		aboveLine+='`'
+		belowLine+='.'
+	for i in range(0,cols-(7+8+len(ent.date))):
+		aboveLine+='#'
+		belowLine+='#'
+	
+	header=aboveLine+'\n'+dateLine+'\n'+belowLine
+	journosOut.printPurple(header)
+
+	journosOut.printBlue(GENERAL)
+	print
+	print ent.section[GENERAL]
+	for q in ent.section.keys():
+		if q != GENERAL:
+			journosOut.printBlue(q)
+			print ent.section[q]
