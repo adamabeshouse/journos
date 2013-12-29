@@ -69,7 +69,8 @@ class JournosEncrypt:
 		ciphjourn.write(obj.encrypt(plaintext))
 		ciphjourn.close()
 		plainjourn.close()
-		#os.remove('journal.journos')
+		# DEBUG: comment out the following line to debug stuff
+		os.remove('journal.journos')
 		
 		
 

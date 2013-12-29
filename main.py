@@ -20,7 +20,8 @@ from Crypto.Cipher import DES
 
 
 
-# TODO: encryption
+# (IMPORTANT) TODO: error, interrupt handling, esp w.r.t file writing and the encryption
+
 journosOut.printBlue("    __   ___   __ __ ____  __  __   ___    __ \n    ||  // \\\\  || || || \\\\ ||\\ ||  // \\\\  (( \\\n    || ((   )) || || ||_// ||\\\\|| ((   ))  \\\\ \n |__||  \\\\_//  \\\\_// || \\\\ || \||  \\\\_//  \\_))")
 
 # Get password, decrypt journal file
@@ -110,5 +111,6 @@ elif RUNTYPE=="READ":
 	else:
 		journosOut.printRed("No entry found on "+DATE)
 
+# encrypt again
 enc.exit()
 

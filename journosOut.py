@@ -71,13 +71,17 @@ def printCyan(s):
 	print
 	colorStack.popColor()
 
-def endSection():
-	breakSize=3
-	border='~  o  '
+def fullWidthBorder(border='~  o  '):
 	rows,cols=os.popen('stty size','r').read().split()
 	cols=int(cols)
+	ret=""
+	for i in range(0,cols): ret+=border[i%len(border)]
+	return ret
+
+def endSection():
+	breakSize=3
 	lineBr=""
 	for i in range(0,breakSize): lineBr+='\n'
-	for i in range(0,cols): lineBr+=border[i%6]
+	lineBr+=fullWidthBorder()
 	for i in range(0,breakSize): lineBr+='\n'
 	animPrintRed(lineBr)

@@ -125,6 +125,7 @@ def printEntry(ent):
 		belowLine+='#'
 	
 	header=aboveLine+'\n'+dateLine+'\n'+belowLine
+	footer='\n'+journosOut.fullWidthBorder('_')+'\n'+journosOut.fullWidthBorder('#')+'\n'
 	journosOut.printPurple(header)
 
 	journosOut.printBlue(GENERAL)
@@ -134,3 +135,5 @@ def printEntry(ent):
 		if q != GENERAL:
 			journosOut.printBlue(q)
 			print ent.section[q]
+			
+	journosOut.printPurple(footer)
