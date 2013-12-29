@@ -6,6 +6,9 @@ import journosOut
 import journosIn
 import entry
 import journosDate
+import journosEncrypt
+from getpass import getpass
+from Crypto.Cipher import DES
 
 # VALID COMMANDS:
 #	journos
@@ -19,6 +22,10 @@ import journosDate
 
 # TODO: encryption
 journosOut.printBlue("    __   ___   __ __ ____  __  __   ___    __ \n    ||  // \\\\  || || || \\\\ ||\\ ||  // \\\\  (( \\\n    || ((   )) || || ||_// ||\\\\|| ((   ))  \\\\ \n |__||  \\\\_//  \\\\_// || \\\\ || \||  \\\\_//  \\_))")
+
+# Get password, decrypt journal file
+enc = journosEncrypt.JournosEncrypt()
+enc.init()
 
 RUNTYPE="WRITE"
 DATEFORMATERROR="Please input your date as MM/DD or MM/DD/YYYY"
@@ -102,4 +109,6 @@ elif RUNTYPE=="READ":
 		entry.printEntry(ent)
 	else:
 		journosOut.printRed("No entry found on "+DATE)
+
+enc.exit()
 

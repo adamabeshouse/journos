@@ -1,6 +1,8 @@
 journos
 =======
 
+You need to have PyCrypto installed (pip install pycrypto works fine)
+
 A pro-active journal to help you measure your life
 
 General ideas for this:
