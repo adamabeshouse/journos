@@ -1,6 +1,7 @@
 import sys
 import tempfile
 import journosOut
+import journosDate
 import config
 import datetime
 import string
@@ -21,11 +22,11 @@ class Entry:
 			self.section[q]=""
 
 	def getToday(self):
-		journosOut.printBlue(GENERAL)
+		journosOut.animPrintBlue(GENERAL)
 		self.section[GENERAL]=journosIn.getInput()
 		for q in self.section.keys():
 			if q!=GENERAL:
-				journosOut.printBlue(q)
+				journosOut.animPrintBlue(q)
 				self.section[q]=journosIn.getInput()
 		d=datetime.date.today()
 		self.date=str(d.month)+"/"+str(d.day)+"/"+str(d.year)
@@ -50,7 +51,7 @@ class Entry:
 			self.from_editable(text)
 
 	def to_editable(self):
-		ret="DO NOT EDIT ANY LINES THAT BEGIN WITH 'x|'\n\n"
+		ret="DO NOT EDIT ANY LINES THAT BEGIN WITH 'x|'\nLINE BREAKS WILL NOT BE RESPECTED\n\n"
 		ret+="d|"+self.date+'\n\n'
 		ret+="q|"+GENERAL+'\n\n'+self.section[GENERAL]+'\n\n'
 		for q in self.section.keys():
@@ -73,21 +74,23 @@ class Entry:
 				current_answer=""
 			else:
 				current_answer+=line
+		self.section[current_question]=current_answer
 					
 	def to_s(self):
 		conf=config.Config()
 		conf.get()
-		ret=self.date+"|"+GENERAL+":"+self.section[GENERAL]
+		ret=self.date+"|"+GENERAL+"|"+self.section[GENERAL]
 		for q in conf.special_questions:
-			ret+="|"+q+":"+self.section[q]
+			ret+="|"+q+"|"+self.section[q]
 		return ret
 
 	def from_s(self, s):
 		s=s.strip().split("|")
 		self.date=s[0]
-		for i in range(1,len(s)):
-			QnA=s[i].split(":")
-			self.section[QnA[0]] = QnA[1]
+		i=1
+		while i < len(s):
+			self.section[s[i]]=s[i+1]
+			i=i+2
 
 	def readEntry(self, date):
 		f=open("journal.journos","r")
