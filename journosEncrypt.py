@@ -1,6 +1,6 @@
 from getpass import getpass
 from Crypto.Cipher import DES
-import journosOut
+import journosOut,journosIn
 import os
 import string
 
@@ -10,18 +10,48 @@ class JournosEncrypt:
 	password=""
 	def createPassword(self):
 		journosOut.animPrintPurple("Please enter a password")
-		password = getpass()
+		password = journosIn.getPassword()
 		for i in range(0,max(0,8-len(password))):
 			password+='X'
 		confirmation = None
 		while confirmation != password:
 			journosOut.animPrintPurple("Please re-enter your password to confirm")
-			confirmation = getpass()
+			confirmation = journosIn.getPassword()
 			for i in range(0,max(0,8-len(confirmation))):
 				confirmation+='X'
 			if confirmation != password:
 				journosOut.printRed("The passwords do not match. Please try again or keyboard interrupt to close the program and start over.")
 		self.password=password[:8]
+
+	def requestPassword(self):
+		journosOut.animPrintPurple("Please enter your password")
+		password = journosIn.getPassword()
+		for i in range(0,max(0,8-len(password))):
+			password+='X'
+		password=password[:8]
+		return password
+	
+	def verifyPassword(self, password):
+		# as side effect, when succeeds, dumps decrypted version into journal.journos, and saves correct password in member variable
+		obj = DES.new(password, DES.MODE_ECB)
+		plainjourn = open('journal.journos', 'w')
+		ciphjourn = open('ciphjourn.journos','r')
+		ciphertext = ciphjourn.read()
+		if obj.decrypt(ciphertext).startswith(DECRYPTION_CONF):
+			plainjourn.write(obj.decrypt(ciphertext))
+			plainjourn.close()
+			ciphjourn.close()
+			self.password = password
+			return True
+		else:
+			plainjourn.close()
+			ciphjourn.close()
+			os.remove('journal.journos')
+			journosOut.printRed("Incorrect password.")
+			return False
+
+	def changePassword(self):
+		self.createPassword()	
 
 	def init(self):
 		if not os.path.exists("ciphjourn.journos"):
@@ -31,27 +61,15 @@ class JournosEncrypt:
 			return
 		else:
 			while True:
-				journosOut.animPrintPurple("Please enter your password")
-				password = getpass()
+				'''journosOut.animPrintPurple("Please enter your password")
+				password = journosIn.getPassword()
 				for i in range(0,max(0,8-len(password))):
 					password+='X'
-				password=password[:8]
-				obj = DES.new(password, DES.MODE_ECB)
-				plainjourn = open('journal.journos', 'w')
-				ciphjourn = open('ciphjourn.journos','r')
-				ciphertext = ciphjourn.read()
-				if obj.decrypt(ciphertext).startswith(DECRYPTION_CONF):
-					plainjourn.write(obj.decrypt(ciphertext))
-					plainjourn.close()
-					ciphjourn.close()
-					self.password = password
+				password=password[:8]'''
+				password=self.requestPassword()
+				verified=self.verifyPassword(password)
+				if verified:
 					return
-				else:
-					plainjourn.close()
-					ciphjourn.close()
-					os.remove('journal.journos')
-					journosOut.printRed("Incorrect password.")
-					continue
 
 	def exit(self):
 		obj = DES.new(self.password, DES.MODE_ECB)

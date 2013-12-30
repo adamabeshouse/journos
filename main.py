@@ -9,24 +9,40 @@ import journosDate
 import journosEncrypt
 from getpass import getpass
 from Crypto.Cipher import DES
+import signal
 
 # VALID COMMANDS:
 #	journos
 #	journos MM/DD/YYYY
 #	journos read
 #	journos read MM/DD/YYYY
+#	journos changepw
 
 
+ENC_INIT_DONE=False
+# Error Handling
+def sigint_signal_handler(signal, frame):
+	journosOut.printRed("Closing down...")
+	quit_gracefully()
 
+def eof_handler():
+	journosOut.printRed("Ctrl+C to quit")
+	return
 
+def quit_gracefully():
+	if ENC_INIT_DONE:
+		enc.exit()
+	sys.exit(0)
 
-# (IMPORTANT) TODO: error, interrupt handling, esp w.r.t file writing and the encryption
+signal.signal(signal.SIGINT, sigint_signal_handler)
+# # # # # # # # #
 
 journosOut.printBlue("    __   ___   __ __ ____  __  __   ___    __ \n    ||  // \\\\  || || || \\\\ ||\\ ||  // \\\\  (( \\\n    || ((   )) || || ||_// ||\\\\|| ((   ))  \\\\ \n |__||  \\\\_//  \\\\_// || \\\\ || \||  \\\\_//  \\_))")
 
 # Get password, decrypt journal file
 enc = journosEncrypt.JournosEncrypt()
 enc.init()
+ENC_INIT_DONE=True
 
 RUNTYPE="WRITE"
 DATEFORMATERROR="Please input your date as MM/DD or MM/DD/YYYY"
@@ -34,6 +50,10 @@ d=datetime.date.today()
 DATE=journosDate.today()
 
 ''' (I)  PARSE COMMAND ''' 
+if len(sys.argv) > 1 and sys.argv[1] == "changepw":
+	enc.changePassword()
+	quit_gracefully()
+
 if len(sys.argv) > 1:
 	if sys.argv[1].lower().startswith("r"):
 		RUNTYPE="READ"
@@ -44,7 +64,6 @@ if len(sys.argv) > 1:
 if len(sys.argv) == 3:
 	DATE=journosDate.formatDate(sys.argv[2])
 	if DATE==-1: journosOut.printRed(DATEFORMATERROR)
-
 
 ''' (II)  EXECUTE COMMAND '''
 if RUNTYPE=="WRITE":
