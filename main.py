@@ -50,7 +50,7 @@ if len(sys.argv) == 3:
 if RUNTYPE=="WRITE":
 	if DATE==journosDate.today():
 		for day in backlog.daysMissing():
-			journosOut.animPrintPurple("Would you like to fill out an entry for "+day+"? (Y/N)")
+			journosOut.animPrintPurple("Would you like to fill out an entry for "+backlog.toString(day)+"? (Y/N)")
 			if journosIn.isYes(journosIn.getInput()):
 				ent=entry.Entry()
 				ent.get(day)
