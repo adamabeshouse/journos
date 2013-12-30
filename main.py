@@ -20,6 +20,7 @@ import signal
 
 
 ENC_INIT_DONE=False
+ENC_INIT_RUNNING=False
 # Error Handling
 def sigint_signal_handler(signal, frame):
 	journosOut.printRed("Closing down...")
@@ -30,6 +31,9 @@ def eof_handler():
 	return
 
 def quit_gracefully():
+	if ENC_INIT_RUNNING:
+		journosOut.printRed("Cannot quit right now - please wait a moment")
+		return
 	if ENC_INIT_DONE:
 		enc.exit()
 	sys.exit(0)
@@ -41,7 +45,9 @@ journosOut.printBlue("    __   ___   __ __ ____  __  __   ___    __ \n    ||  //
 
 # Get password, decrypt journal file
 enc = journosEncrypt.JournosEncrypt()
+ENC_INIT_RUNNING=True
 enc.init()
+ENC_INIT_RUNNING=False
 ENC_INIT_DONE=True
 
 RUNTYPE="WRITE"
