@@ -1,0 +1,10 @@
+#!/usr/bin/python
+
+import sys
+import os
+import string
+
+commands = ["python","~/sideprojects/journos/main.py"]
+commands += sys.argv[1:]
+
+os.system(string.join(commands))
