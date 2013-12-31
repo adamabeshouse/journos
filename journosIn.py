@@ -9,6 +9,9 @@ def getPassword():
 	except EOFError:
 		journosOut.printRed(EOFERROR)
 		return getPassword()
+	except IOError:
+		return getPassword()
+
 			
 
 def getInput():

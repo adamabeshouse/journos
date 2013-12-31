@@ -23,7 +23,6 @@ ENC_INIT_DONE=False
 ENC_INIT_RUNNING=False
 # Error Handling
 def sigint_signal_handler(signal, frame):
-	journosOut.printRed("Closing down...")
 	quit_gracefully()
 
 def eof_handler():
@@ -31,9 +30,10 @@ def eof_handler():
 	return
 
 def quit_gracefully():
-	if ENC_INIT_RUNNING:
-		journosOut.printRed("Cannot quit right now - please wait a moment")
+	if not enc.can_exit:
+		journosOut.printRed("Cannot quit right now")
 		return
+	journosOut.printRed("Closing down...")
 	if ENC_INIT_DONE:
 		enc.exit()
 	sys.exit(0)

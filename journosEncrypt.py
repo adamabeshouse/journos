@@ -8,6 +8,7 @@ DECRYPTION_CONF="DO NOT DELETE THIS LINE"
 
 class JournosEncrypt:
 	password=""
+	can_exit=True
 	def createPassword(self):
 		journosOut.animPrintPurple("Please enter a password")
 		password = journosIn.getPassword()
@@ -56,22 +57,22 @@ class JournosEncrypt:
 	def init(self):
 		if not os.path.exists("ciphjourn.journos"):
 			newpass = self.createPassword()
+			self.can_exit=False
 			newfile = open("journal.journos","w")
 			newfile.write(DECRYPTION_CONF+'\n')
+			self.can_exit=True
 			return
 		else:
 			while True:
-				'''journosOut.animPrintPurple("Please enter your password")
-				password = journosIn.getPassword()
-				for i in range(0,max(0,8-len(password))):
-					password+='X'
-				password=password[:8]'''
 				password=self.requestPassword()
+				self.can_exit=False
 				verified=self.verifyPassword(password)
+				self.can_exit=True
 				if verified:
 					return
 
 	def exit(self):
+		self.can_exit=False
 		obj = DES.new(self.password, DES.MODE_ECB)
 		ciphjourn = open('ciphjourn.journos','w')
 		plainjourn = open('journal.journos','r')
