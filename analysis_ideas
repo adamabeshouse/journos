@@ -1,0 +1,35 @@
+STATISTICS:
+
+query language: statistic type & subset to look at
+ex, statistic type could be most used words, subset could be wednesdays over last month
+
+STATISTIC TYPES:
+1) n most used word n-grams
+2) n least used word n-grams
+3) sentiment distribution (e.g. this many appeared very happy, this many appeared not that happy, etc)
+4) number of appearances of a particular n-gram
+
+SUBSETS (can be intersected, i.e. combined):
+1) day of week
+2) grade (more generally, answer to a special question)
+3) answers to question Y that start with string X 
+4) answers to question Y that include string X
+
+
+I definitely think an interactive console is the best way to do this
+It would be weird and burdensome to do journos analyze x, journos analyze y, etc.
+
+
+
+GENERATING RANDOM ENTRY:
+Markov chain style, sampling from the distribution on entries in a particular subset (see above for subsets)
+
+
+
+
+
+
+
+
+
+
