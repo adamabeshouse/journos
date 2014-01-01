@@ -3,12 +3,25 @@ from Crypto.Cipher import DES
 import journosOut,journosIn
 import os
 import string
+import entry
+import datetime
+import journosDate
 
 DECRYPTION_CONF="DO NOT DELETE THIS LINE"
 
 class JournosEncrypt:
 	password=""
 	can_exit=True
+	def dump(self):
+		date=journosDate.today().replace('/','_')
+		dumpfile=open("journos_dump_"+date+".txt","w")
+		ent=entry.latest()
+		dumpfile.write(ent.toDump()+'\n')
+		while ent.hasPrevious():
+			ent.getPrevious()
+			dumpfile.write(ent.toDump()+'\n')
+		dumpfile.close()
+
 	def createPassword(self):
 		journosOut.animPrintPurple("Please enter a password")
 		password = journosIn.getPassword()

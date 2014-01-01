@@ -106,6 +106,58 @@ class Entry:
 		self.from_s(l)
 		return 1
 
+	def toDump(self):
+		dateLine="#######    "+self.date+"    #######"
+		aboveLine="#######"
+		belowLine="#######"
+		for i in range(0,8+len(self.date)):
+			aboveLine+='`'
+			belowLine+='.'
+		for i in range(0,7):
+			aboveLine+='#'
+			belowLine+='#'
+		header=aboveLine+'\n'+dateLine+'\n'+belowLine
+		out=header+'\n\n'+"Q: "+GENERAL+'\n'+"A: "+self.section[GENERAL]+'\n'
+		for q in self.section.keys():
+			if q != GENERAL:
+				out+="Q: "+q+'\n'+"A: "+self.section[q]+'\n'
+		return out
+	
+	def hasPrevious(self):
+		journ = open("journal.journos","r")
+		journ.readline() # get rid of encryption validation message
+		for line in journ:
+			ent=Entry()
+			ent.from_s(line.strip())
+			if self.date != ent.date and journosDate.min(self.date, ent.date) == ent.date: 
+				journ.close()
+				return True
+		journ.close()
+		return False
+
+	def getPrevious(self):
+		curr_date = self.date
+		success = 0
+		ent=Entry()
+		while success==0:
+			d = datetime.datetime(int(curr_date.split("/")[2]), int(curr_date.split("/")[0]), int(curr_date.split("/")[1]))
+			d = d - datetime.timedelta(days=1)
+			curr_date = journosDate.datetimeToDate(d)
+			success = self.readEntry(curr_date)
+
+def latest():
+	journ = open("journal.journos","r")
+	journ.readline() # get rid of encryption validation message
+	latest = Entry()
+	latest.date = '1/1/1970'
+	for line in journ:
+		ent=Entry()
+		ent.from_s(line.strip())
+		if journosDate.min(latest.date, ent.date) == latest.date:
+			latest = ent
+	journ.close()
+	return latest
+
 def printEntry(ent):
 	rows,cols=os.popen('stty size','r').read().split()
 	cols=int(cols)

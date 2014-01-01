@@ -20,6 +20,8 @@ def getInput():
 	except EOFError:
 		journosOut.printRed(EOFERROR)
 		return getInput()
+	except IOError:
+		return getInput()
 
 def isYes(s):
 	return s.lower().startswith("y")

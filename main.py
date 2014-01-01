@@ -17,6 +17,7 @@ import signal
 #	journos read
 #	journos read MM/DD/YYYY
 #	journos changepw
+#	journos dump
 
 
 ENC_INIT_DONE=False
@@ -58,6 +59,10 @@ DATE=journosDate.today()
 ''' (I)  PARSE COMMAND ''' 
 if len(sys.argv) > 1 and sys.argv[1] == "changepw":
 	enc.changePassword()
+	quit_gracefully()
+
+if len(sys.argv) > 1 and sys.argv[1] == "dump":
+	enc.dump()
 	quit_gracefully()
 
 if len(sys.argv) > 1:

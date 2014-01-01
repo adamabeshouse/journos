@@ -35,3 +35,21 @@ def formatDate(s):
 	except:
 		return -1
 
+def min(_date1, _date2):
+	date1=_date1.split("/")
+	date2=_date2.split("/")
+	if date1[2] < date2[2]:
+		return _date1
+	elif date1[2] > date2[2]:
+		return _date2
+	elif date1[0] < date2[0]:
+		return _date1
+	elif date1[0] > date2[0]:
+		return _date2
+	elif date1[1] < date2[1]:
+		return _date1
+	elif date1[1] > date2[1]:
+		return _date2
+	else:
+		# arbitrary - they are equal
+		return _date1
