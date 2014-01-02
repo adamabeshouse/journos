@@ -4,8 +4,8 @@ query language: statistic type & subset to look at
 ex, statistic type could be most used words, subset could be wednesdays over last month
 
 STATISTIC TYPES:
-1) n most used word n-grams
-2) n least used word n-grams
+1) m most used word n-grams
+2) m least used word n-grams
 3) sentiment distribution (e.g. this many appeared very happy, this many appeared not that happy, etc)
 4) number of appearances of a particular n-gram
 

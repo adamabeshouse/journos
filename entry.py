@@ -8,6 +8,7 @@ import string
 import journosIn
 import os
 from subprocess import call
+import journosSearch
 
 GENERAL="What did you do today?"
 class Entry:
@@ -20,6 +21,49 @@ class Entry:
 		self.section[GENERAL]=""
 		for q in conf.special_questions:
 			self.section[q]=""
+
+	def contains(self, text, searchParam=None):
+		if not searchParam:
+			searchParam = journosSearch.SearchParams()
+		for q in self.section.keys():
+			tempQ=q
+			tempA=self.section[q]
+			if not searchParam.case_sensitive:
+				tempQ=tempQ.lower()
+				tempA=tempA.lower()
+			if searchParam.questions and text in tempQ: return True
+			if searchParam.answers and text in tempA: return True
+		return False
+
+	def printSearchMatches(self, text, searchParam=None):
+		if not searchParam:
+			searchParam = journosSearch.SearchParams()
+		matches={}
+		for q in self.section.keys():
+			tempQ=q
+			tempA=self.section[q]
+			if not searchParam.case_sensitive:
+				tempQ=tempQ.lower()
+				tempA=tempA.lower()
+			qmatches=[]
+			amatches=[]
+			if searchParam.questions: 
+				qmatches=journosSearch.find_all(tempQ, text)
+			if searchParam.answers: 
+				amatches=journosSearch.find_all(tempA, text)
+			matches[tempQ]=qmatches
+			matches[tempA]=amatches
+
+		charWindowSize = 40
+		for k in matches.keys():
+			for i in matches[k]:
+				windowA=max(0, i-charWindowSize)
+				windowB=min(len(k), i+charWindowSize+len(text))
+				journosOut.outPurple(self.date+": ...")
+				journosOut.out(k[windowA:i])
+				journosOut.outBlue(k[i:i+len(text)])
+				journosOut.out(k[i+len(text):windowB])
+				journosOut.outPurple('...\n')
 
 	def getToday(self):
 		journosOut.animPrintBlue(GENERAL)

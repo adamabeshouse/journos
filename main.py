@@ -7,6 +7,7 @@ import journosIn
 import entry
 import journosDate
 import journosEncrypt
+import journosSearch
 from getpass import getpass
 from Crypto.Cipher import DES
 import signal
@@ -41,6 +42,16 @@ def quit_gracefully():
 
 signal.signal(signal.SIGINT, sigint_signal_handler)
 # # # # # # # # #
+def eatFlags():
+	flags=[]
+	newv=[]
+	for i in range(0,len(sys.argv)):
+		if sys.argv[i].startswith('-'):
+			flags+=[sys.argv[i]]
+		else:
+			newv+=[sys.argv[i]]
+	sys.argv=[newv[i] for i in range(0,len(newv))]
+	return flags
 
 journosOut.printBlue("    __   ___   __ __ ____  __  __   ___    __ \n    ||  // \\\\  || || || \\\\ ||\\ ||  // \\\\  (( \\\n    || ((   )) || || ||_// ||\\\\|| ((   ))  \\\\ \n |__||  \\\\_//  \\\\_// || \\\\ || \||  \\\\_//  \\_))")
 
@@ -64,6 +75,25 @@ if len(sys.argv) > 1 and sys.argv[1] == "changepw":
 if len(sys.argv) > 1 and sys.argv[1] == "dump":
 	enc.dump()
 	quit_gracefully()
+
+if len(sys.argv) > 1 and sys.argv[1] == "search":
+	flags=eatFlags()
+	params=journosSearch.SearchParams()
+	if len(sys.argv) > 2:
+		if '-questions' in flags:
+			params.questions=True
+			params.answers=False
+		elif '-answers' in flags:
+			params.questions=False
+			params.answers=True
+		if '-case' in flags:
+			params.case_sensitive=True
+
+		journosSearch.search(sys.argv[2], params)
+		quit_gracefully()
+	else:
+		journosOut.printRed("No search term specified")
+		quit_gracefully()
 
 if len(sys.argv) > 1:
 	if sys.argv[1].lower().startswith("r"):

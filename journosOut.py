@@ -5,6 +5,22 @@ import sys
 
 pauseLength=0.009
 
+def out(s):
+	sys.stdout.write(s)
+	sys.stdout.flush()
+
+def outBlue(s):
+	colorStack.pushBlue()
+	sys.stdout.write(s)
+	sys.stdout.flush()
+	colorStack.popColor()
+
+def outPurple(s):
+	colorStack.pushPurple()
+	sys.stdout.write(s)
+	sys.stdout.flush()
+	colorStack.popColor()
+
 def animPrint(s):
 	for i in range(0,len(s)):
 		sys.stdout.write(s[i])
