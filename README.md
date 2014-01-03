@@ -3,7 +3,7 @@ journos - A pro-active journal to help you measure your life
 
 Installation:
 
-After cloning, you have to install PyCrypto (try `sudo pip install pycrypto`).
+After cloning, you have to install PyCrypto (try `sudo pip install pycrypto`) and Appdirs (`sudo pip install appdirs`).
 
 Running:
 
