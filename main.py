@@ -8,6 +8,7 @@ import entry
 import journosDate
 import journosEncrypt
 import journosSearch
+import journosDir
 from getpass import getpass
 from Crypto.Cipher import DES
 import signal
@@ -114,13 +115,13 @@ if RUNTYPE=="WRITE":
 			if journosIn.isYes(journosIn.getInput()):
 				ent=entry.Entry()
 				ent.get(day)
-				f=open("journal.journos","a")
+				f=open(journosDir.plainTextJourn(),"a")
 				f.write(ent.to_s()+'\n')
 				f.close()
 			else: 
 				ent=entry.Entry()
 				ent.date=day
-				f=open("journal.journos","a")
+				f=open(journosDir.plainTextJourn(),"a")
 				f.write(ent.to_s()+'\n')
 				f.close()
 				journosOut.animPrintPurple("If you change your mind, type 'journos "+day+"'")
@@ -132,20 +133,20 @@ if RUNTYPE=="WRITE":
 		journosOut.animPrintBlue("Here's what you've written for "+("today" if DATE==journosDate.today() else DATE)+":")
 		entry.printEntry(newEnt)
 
-	_day="today" if DATE==journosDate.today() else DATE
+	_day="today, "+DATE if DATE==journosDate.today() else DATE
 	_create_type="fill out an" if entSuccess == 0 else "edit your"
 	journosOut.animPrintPurple("Would you like to "+_create_type+" entry for "+_day+"? (Y/N)")
 
 	if journosIn.isYes(journosIn.getInput()):
 		if entSuccess == 0:
 			newEnt.get(DATE)
-			f=open("journal.journos","a")
+			f=open(journosDir.plainTextJourn(),"a")
 			f.write(newEnt.to_s()+'\n')
 			f.close()
 		else:
 			newEnt.edit(DATE)
-			tmp=open("journal.journos.tmp","w")
-			old=open("journal.journos","r")
+			tmp=open(journosDir.plainTextJournTmp(),"w")
+			old=open(journosDir.plainTextJourn(),"r")
 			for line in old:
 				if line.startswith(DATE):
 					tmp.write(newEnt.to_s()+'\n')
@@ -153,11 +154,11 @@ if RUNTYPE=="WRITE":
 					tmp.write(line)
 			tmp.close()
 			old.close()
-			os.rename("journal.journos.tmp","journal.journos")
+			os.rename(journosDir.plainTextJournTmp(),journosDir.plainTextJourn())
 
 	else: 
 		if entSuccess == 0:
-			f=open("journal.journos","a")
+			f=open(journosDir.plainTextJourn(),"a")
 			f.write(newEnt.to_s()+'\n')
 			journosOut.animPrintPurple("If you change your mind, type 'journos "+journosDate.today()+"'")
 		else:

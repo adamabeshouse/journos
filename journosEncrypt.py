@@ -6,8 +6,14 @@ import string
 import entry
 import datetime
 import journosDate
+import journosDir
 
 DECRYPTION_CONF="DO NOT DELETE THIS LINE"
+
+def ensure_dir(f):
+	d = os.path.dirname(f)
+	if not os.path.exists(d):
+		os.makedirs(d)
 
 class JournosEncrypt:
 	password=""
@@ -46,10 +52,10 @@ class JournosEncrypt:
 		return password
 	
 	def verifyPassword(self, password):
-		# as side effect, when succeeds, dumps decrypted version into journal.journos, and saves correct password in member variable
+		# as side effect, when succeeds, dumps decrypted version into journosDir.plainTextJourn(), and saves correct password in member variable
 		obj = DES.new(password, DES.MODE_ECB)
-		plainjourn = open('journal.journos', 'w')
-		ciphjourn = open('ciphjourn.journos','r')
+		plainjourn = open(journosDir.plainTextJourn(), 'w')
+		ciphjourn = open(journosDir.cipherTextJourn(),'r')
 		ciphertext = ciphjourn.read()
 		if obj.decrypt(ciphertext).startswith(DECRYPTION_CONF):
 			plainjourn.write(obj.decrypt(ciphertext))
@@ -60,18 +66,20 @@ class JournosEncrypt:
 		else:
 			plainjourn.close()
 			ciphjourn.close()
-			os.remove('journal.journos')
+			os.remove(journosDir.plainTextJourn())
 			journosOut.printRed("Incorrect password.")
 			return False
 
 	def changePassword(self):
 		self.createPassword()	
 
+
 	def init(self):
-		if not os.path.exists("ciphjourn.journos"):
+		ensure_dir(journosDir.cipherTextJourn())
+		if not os.path.exists(journosDir.cipherTextJourn()):
 			newpass = self.createPassword()
 			self.can_exit=False
-			newfile = open("journal.journos","w")
+			newfile = open(journosDir.plainTextJourn(),"w")
 			newfile.write(DECRYPTION_CONF+'\n')
 			self.can_exit=True
 			return
@@ -87,8 +95,8 @@ class JournosEncrypt:
 	def exit(self):
 		self.can_exit=False
 		obj = DES.new(self.password, DES.MODE_ECB)
-		ciphjourn = open('ciphjourn.journos','w')
-		plainjourn = open('journal.journos','r')
+		ciphjourn = open(journosDir.cipherTextJourn(),'w')
+		plainjourn = open(journosDir.plainTextJourn(),'r')
 		plaintext = plainjourn.readlines()
 		plaintext[0]=DECRYPTION_CONF+'\n'
 		totallength=0
@@ -102,7 +110,7 @@ class JournosEncrypt:
 		ciphjourn.close()
 		plainjourn.close()
 		# DEBUG: comment out the following line to debug stuff
-		os.remove('journal.journos')
+		os.remove(journosDir.plainTextJourn())
 		
 		
 

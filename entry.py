@@ -9,6 +9,7 @@ import journosIn
 import os
 from subprocess import call
 import journosSearch
+import journosDir
 
 GENERAL="What did you do today?"
 class Entry:
@@ -137,7 +138,7 @@ class Entry:
 			i=i+2
 
 	def readEntry(self, date):
-		f=open("journal.journos","r")
+		f=open(journosDir.plainTextJourn(),"r")
 		l=""
 		success = 0
 		for line in f:
@@ -168,7 +169,7 @@ class Entry:
 		return out
 	
 	def hasPrevious(self):
-		journ = open("journal.journos","r")
+		journ = open(journosDir.plainTextJourn(),"r")
 		journ.readline() # get rid of encryption validation message
 		for line in journ:
 			ent=Entry()
@@ -190,7 +191,7 @@ class Entry:
 			success = self.readEntry(curr_date)
 
 def latest():
-	journ = open("journal.journos","r")
+	journ = open(journosDir.plainTextJourn(),"r")
 	journ.readline() # get rid of encryption validation message
 	latest = Entry()
 	latest.date = '1/1/1970'
