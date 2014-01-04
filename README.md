@@ -42,5 +42,7 @@ By default, a case-insensitive search is done throughout all text (questions and
 ### To-do:
 
 • ~~Be able to run it from any directory~~
+
 • In 'setup.py', bind the command `journos`
+
 • Easy way to add special questions
