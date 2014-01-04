@@ -44,6 +44,8 @@ where <date> is a string of one of the following forms:
 
 By default, a case-insensitive search is done throughout all text (questions and answers) in the journal
 
+`journos questions`: modify the questions that are asked in the journal in addition to "What did you do today?"
+
 
 ### To-do:
 
@@ -51,7 +53,7 @@ By default, a case-insensitive search is done throughout all text (questions and
 
 • In 'setup.py', bind the command `journos`
 
-• Easy way to add special questions
+• ~~Easy way to add special questions~~
 
 • Easier install, e.g. perhaps `pip install journos` ?
 

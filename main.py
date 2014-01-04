@@ -12,6 +12,7 @@ import journosDir
 from getpass import getpass
 from Crypto.Cipher import DES
 import signal
+import editSpecialQ
 
 # VALID COMMANDS:
 #	journos
@@ -77,7 +78,11 @@ if len(sys.argv) > 1 and sys.argv[1] == "dump":
 	enc.dump()
 	quit_gracefully()
 
-if len(sys.argv) > 1 and sys.argv[1] == "search":
+if len(sys.argv) > 1 and sys.argv[1].startswith("q"):
+	editSpecialQ.editSpecialQ()
+	quit_gracefully()
+
+if len(sys.argv) > 1 and sys.argv[1].startswith("s"):
 	flags=eatFlags()
 	params=journosSearch.SearchParams()
 	if len(sys.argv) > 2:
