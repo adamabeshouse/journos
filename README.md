@@ -54,3 +54,5 @@ By default, a case-insensitive search is done throughout all text (questions and
 • Easy way to add special questions
 
 • Easier install, e.g. perhaps `pip install journos` ?
+
+• Handle bad input from command line
