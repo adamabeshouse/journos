@@ -3,7 +3,13 @@ journos - A pro-active journal to help you measure your life
 
 ### Installation:
 
-After cloning, you have to install PyCrypto (try `sudo pip install pycrypto`) and Appdirs (`sudo pip install appdirs`).
+After cloning, navigate to the directory and run 'python setup.py'. 
+
+You will also need PyCrypto and Appdirs, two Python modules. If you don't, setup.py will notify you of that. If that happens, you can install these with PyPI with the following terminal commands:
+
+`sudo pip install pycrypto`
+
+`sudo pip install appdirs`
 
 ### Valid commands:
 
@@ -42,5 +48,7 @@ By default, a case-insensitive search is done throughout all text (questions and
 ### To-do:
 
 • ~~Be able to run it from any directory~~
+
 • In 'setup.py', bind the command `journos`
+
 • Easy way to add special questions
