@@ -1,7 +1,9 @@
+import journosDir
+
 class Config:
 	special_questions=[]
 	def get(self):
-		f=open("config.journos","r")
+		f=open(journosDir.config(),"r")
 		l=""
 		for line in f:
 			if line.startswith("special_questions"):

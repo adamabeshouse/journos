@@ -4,6 +4,9 @@ appauthor = "Abesauce"
 user_data_dir(appname, appauthor)
 site_data_dir
 
+def config():
+	return user_data_dir(appname, appauthor)+'/config.journos'
+
 def plainTextJourn():
 	return user_data_dir(appname, appauthor)+'/plain.journos'
 

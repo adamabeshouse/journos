@@ -10,11 +10,6 @@ import journosDir
 
 DECRYPTION_CONF="DO NOT DELETE THIS LINE"
 
-def ensure_dir(f):
-	d = os.path.dirname(f)
-	if not os.path.exists(d):
-		os.makedirs(d)
-
 class JournosEncrypt:
 	password=""
 	can_exit=True
@@ -75,7 +70,6 @@ class JournosEncrypt:
 
 
 	def init(self):
-		ensure_dir(journosDir.cipherTextJourn())
 		if not os.path.exists(journosDir.cipherTextJourn()):
 			newpass = self.createPassword()
 			self.can_exit=False
