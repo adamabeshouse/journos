@@ -13,10 +13,10 @@ import journosDir
 
 GENERAL="What did you do today?"
 class Entry:
-	section={}
-	date="01/01/2013"
 	
 	def __init__(self):
+		self.section={}
+		self.date="01/01/2013"
 		conf=config.Config()
 		conf.get()
 		self.section[GENERAL]=""

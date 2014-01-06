@@ -1,11 +1,8 @@
 import entry
 
 class SearchParams:
-	# i.e., search question text? search answer text?
-	questions=True
-	answers=True
-	case_sensitive=False
 	def __init__(self, q=True, a=True, c=False):
+	# i.e., search question text? search answer text?
 		self.questions = q
 		self.answers = a
 		self.case_sensitive = c

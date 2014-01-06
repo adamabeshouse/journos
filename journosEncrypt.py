@@ -11,8 +11,6 @@ import journosDir
 DECRYPTION_CONF="DO NOT DELETE THIS LINE"
 
 class JournosEncrypt:
-	password=""
-	can_exit=True
 	def dump(self):
 		date=journosDate.today().replace('/','_')
 		dumpfile=open("journos_dump_"+date+".txt","w")
@@ -70,6 +68,8 @@ class JournosEncrypt:
 
 
 	def init(self):
+		self.password=""
+		self.can_exit=True
 		if not os.path.exists(journosDir.cipherTextJourn()):
 			newpass = self.createPassword()
 			self.can_exit=False

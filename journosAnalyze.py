@@ -2,16 +2,19 @@ import journosIn, journosOut
 import datetime
 
 class SubsetParams:
-	# entry parameters
-	weekday=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-	timewindow=[datetime.date.today(), datetime.date.today()]
-	# answer parameters
-	startswith={} # answers to question Y that start with string X
-	includes={} # answers to question Y that include string X
+	def __init__(self):
+		# entry parameters
+		self.weekday=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+		self.timewindow=[datetime.date.today(), datetime.date.today()]
+		# answer parameters
+		self.startswith={} # answers to question Y that start with string X
+		self.includes={} # answers to question Y that include string X
+		
 
 class StatisticParams:
-	window=1 # as in, the 'm' most used ... m is 'window'
-	extreme=['least','most']
+	def __init__(self):
+		self.window=1 # as in, the 'm' most used ... m is 'window'
+		self.extreme=['least','most']
 
 
 def analyzeMain():

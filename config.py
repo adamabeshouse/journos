@@ -2,7 +2,9 @@ import journosDir
 import journosOut
 
 class Config:
-	special_questions=[]
+	def __init__(self):
+		self.special_questions=[]
+
 	def get(self):
 		f=open(journosDir.config(),"r")
 		l=""
