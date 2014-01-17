@@ -1,5 +1,16 @@
 import datetime
 
+def nextDate(date):
+	d=datetime.date(int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
+	n=d+datetime.timedelta(1)
+	return datetimeToDate(n)
+
+def prevDate(date):
+	d=datetime.date(int(date.split('/')[2]), int(date.split('/')[0]), int(date.split('/')[1]))
+	n=d+datetime.timedelta(-1)
+	return datetimeToDate(n)
+
+
 def today():
 	return datetimeToDate(datetime.date.today())
 

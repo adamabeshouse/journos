@@ -120,15 +120,19 @@ if RUNTYPE=="WRITE":
 			if journosIn.isYes(journosIn.getInput()):
 				ent=entry.Entry()
 				ent.get(day)
+				enc.can_exit=False
 				f=open(journosDir.plainTextJourn(),"a")
 				f.write(ent.to_s()+'\n')
 				f.close()
+				enc.can_exit=True
 			else: 
 				ent=entry.Entry()
 				ent.date=day
+				enc.can_exit=False
 				f=open(journosDir.plainTextJourn(),"a")
 				f.write(ent.to_s()+'\n')
 				f.close()
+				enc.can_exit=True
 				journosOut.animPrintPurple("If you change your mind, type 'journos "+day+"'")
 			journosOut.endSection()
 
@@ -145,11 +149,14 @@ if RUNTYPE=="WRITE":
 	if journosIn.isYes(journosIn.getInput()):
 		if entSuccess == 0:
 			newEnt.get(DATE)
+			enc.can_exit=False
 			f=open(journosDir.plainTextJourn(),"a")
 			f.write(newEnt.to_s()+'\n')
 			f.close()
+			enc.can_exit=True
 		else:
 			newEnt.edit(DATE)
+			enc.can_exit=False
 			tmp=open(journosDir.plainTextJournTmp(),"w")
 			old=open(journosDir.plainTextJourn(),"r")
 			for line in old:
@@ -160,22 +167,62 @@ if RUNTYPE=="WRITE":
 			tmp.close()
 			old.close()
 			os.rename(journosDir.plainTextJournTmp(),journosDir.plainTextJourn())
+			enc.can_exit=True
 
 	else: 
 		if entSuccess == 0:
+			enc.can_exit=False
 			f=open(journosDir.plainTextJourn(),"a")
 			f.write(newEnt.to_s()+'\n')
+			f.close()
+			enc.can_exit=True
 			journosOut.animPrintPurple("If you change your mind, type 'journos "+journosDate.today()+"'")
 		else:
 			journosOut.animPrintPurple("If you change your mind, type 'journos "+journosDate.today()+"'")
 	journosOut.endSection()
 elif RUNTYPE=="READ":
-	ent=entry.Entry()
-	success = ent.readEntry(DATE)
-	if success==1:
-		entry.printEntry(ent)
-	else:
-		journosOut.printRed("No entry found on "+DATE)
+	while True:
+		ent=entry.Entry()
+		success = ent.readEntry(DATE)
+		if success==1:
+			entry.printEntry(ent)
+		else:
+			journosOut.printRed("No entry found on "+DATE)
+		journosOut.animPrintBlue("n -- Next      p -- Previous     e -- Edit")
+		inp=journosIn.getInput().lower().strip()
+		if inp=='n':
+			DATE=journosDate.nextDate(DATE)
+			continue
+		elif inp=='p':
+			DATE=journosDate.prevDate(DATE)
+			continue
+		elif inp=='e':
+			newEnt = entry.Entry()
+			if success==1:
+				newEnt.edit(DATE)
+				enc.can_exit=False
+				tmp=open(journosDir.plainTextJournTmp(),"w")
+				old=open(journosDir.plainTextJourn(),"r")
+				for line in old:
+					if line.startswith(DATE):
+						tmp.write(newEnt.to_s()+'\n')
+					else:
+						tmp.write(line)
+				tmp.close()
+				old.close()
+				os.rename(journosDir.plainTextJournTmp(),journosDir.plainTextJourn())
+				enc.can_exit=True
+			else:
+				newEnt.get(DATE)
+				enc.can_exit=False
+				f=open(journosDir.plainTextJourn(),"a")
+				f.write(newEnt.to_s()+'\n')
+				f.close()
+				enc.can_exit=True
+			journosOut.endSection()
+			continue
+		else:
+			break
 
 # encrypt again
 enc.exit()
